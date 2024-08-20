@@ -16,11 +16,9 @@ import java.util.List;
 @WebServlet("/fetch")
 public class SearchServlet extends HttpServlet {
 
-    private final UserDao userDao = new UserDao();
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        UserDao userDao = new UserDao();
         try {
             String query = req.getParameter("query");
             List<User> users = userDao.searchUsers(query);

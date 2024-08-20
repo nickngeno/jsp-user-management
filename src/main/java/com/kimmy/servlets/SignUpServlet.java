@@ -13,6 +13,7 @@ import java.io.IOException;
 @WebServlet(value = "/Signup")
 public class SignUpServlet extends HttpServlet {
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
         String email = request.getParameter("email");
@@ -28,7 +29,6 @@ public class SignUpServlet extends HttpServlet {
 
         try {
             userDAO.saveUser(user);
-
             response.sendRedirect("allUsers");
         } catch (Exception e) {
             e.printStackTrace();

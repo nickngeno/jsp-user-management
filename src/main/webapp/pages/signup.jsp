@@ -1,5 +1,4 @@
-<%@ page import="com.kimmy.model.State" %>
-<%@ page import="com.kimmy.model.City" %>
+<%@include file="navbar.jsp"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.kimmy.model.Country" %>
 <!DOCTYPE html>
@@ -31,10 +30,12 @@
                     var stateSelect = document.getElementById("state");
                     stateSelect.innerHTML = "<option value=''>Select State</option>";
                     data.forEach(state => {
-                        console.log({state});
-                        stateSelect.innerHTML += `<option value='${state.id}'>${state.name}</option>`;
+                        console.log("id : " + state.name)
+                        <%--stateSelect.innerHTML += `<option value="${state.id}">${state.name}</option>`;--%>
+                        stateSelect.innerHTML +="<option value='" + state.id + "'>" + state.name + "</option>";
+
                     });
-                });
+                }).catch(error => console.error('Error fetching States:', error));;
         }
 
         function updateCities() {
@@ -46,8 +47,8 @@
                     var citySelect = document.getElementById("city");
                     citySelect.innerHTML = "<option value=''>Select City</option>";
                     data.forEach(city => {
-                        console.log({city});
-                        citySelect.innerHTML += `<option value='${city.id}'>${city.name}</option>`;
+                        citySelect.innerHTML +="<option value='" + city.id + "'>" + city.name + "</option>";
+
                     });
                 })
                 .catch(error => console.error('Error fetching cities:', error));
@@ -56,25 +57,6 @@
     </script>
 </head>
 <body class="bg-light">
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="${pageContext.request.contextPath}/">Users Dashboard</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="${pageContext.request.contextPath}/pages/signup.jsp">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="${pageContext.request.contextPath}/allUsers">All Users</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
 <div class="container mt-5">
     <h1 class="text-center mb-4">Sign Up</h1>
     <form name="signupForm" action="${pageContext.request.contextPath}/Signup" method="post" class="needs-validation" novalidate onsubmit="return validateForm()">
@@ -167,8 +149,6 @@
         </div>
     </form>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     (function () {
         'use strict'

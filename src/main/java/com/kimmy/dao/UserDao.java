@@ -1,6 +1,5 @@
 package com.kimmy.dao;
 
-import com.kimmy.model.Student;
 import com.kimmy.model.User;
 
 import java.sql.*;
@@ -29,7 +28,7 @@ public class UserDao {
 
         try {
             if (connection != null) {
-                String sql = "INSERT INTO users (name, email, country, state, city, house_number, phone_number, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO users (name, email, country_id, state_id, city_id, house_number, phone_number, password_hash) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement ps = connection.prepareStatement(sql);
                 ps.setString(1, user.getName());
                 ps.setString(2, user.getEmail());
@@ -105,7 +104,7 @@ public class UserDao {
                 ResultSet rs = preparedStatement.executeQuery();
 
                 while (rs.next()) {
-                     user = new User(
+                    user = new User(
                             rs.getInt("id"),
                             rs.getString("name"),
                             rs.getString("email"),
@@ -175,5 +174,65 @@ public class UserDao {
             }
         }
         return users;
+    }
+
+    public User updateUser(User user) {
+        Connection connection = getConnection();
+        try {
+            if (connection != null) {
+                String sql = "UPDATE users SET name=?,email=?, phone_number=?, house_number=? WHERE id=?";
+
+                PreparedStatement statement = connection.prepareStatement(sql);
+
+                statement.setString(1, user.getName());
+                statement.setString(2, user.getEmail());
+                statement.setString(3, user.getPhoneNumber());
+                statement.setString(4, user.getHouseNumber());
+                statement.setInt(5, user.getId());
+
+                int rowsAffected = statement.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    return user;
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (connection != null && !connection.isClosed()) {
+                    connection.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public int deleteUser(int id) {
+        Connection connection = getConnection();
+        try {
+            if (connection != null) {
+                String sql = "Delete from users WHERE id=?";
+
+                PreparedStatement statement = connection.prepareStatement(sql);
+
+                statement.setInt(1, id);
+
+                return statement.executeUpdate();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (connection != null && !connection.isClosed()) {
+                    connection.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
     }
 }

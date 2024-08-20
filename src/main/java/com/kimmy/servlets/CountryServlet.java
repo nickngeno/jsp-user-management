@@ -16,7 +16,7 @@ public class CountryServlet extends HttpServlet {
         try {
             List<Country> countries = countryDAO.getAllCountries();
             request.setAttribute("countries", countries);
-            request.getRequestDispatcher("signUp.jsp").forward(request, response);
+            request.getRequestDispatcher("/pages/signup.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }
